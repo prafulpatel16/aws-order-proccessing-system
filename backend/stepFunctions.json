@@ -1,0 +1,71 @@
+{
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:validateOrderFunction",
+      "Next": "SaveOrderToDatabase",
+      "ResultPath": "$.validationOutput"
+    },
+    "SaveOrderToDatabase": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:saveOrderFunction",
+      "Parameters": {
+        "OrderId.$": "$.validationOutput.OrderId",
+        "customerEmail.$": "$.validationOutput.customerEmail",
+        "productId.$": "$.validationOutput.productId",
+        "quantity.$": "$.validationOutput.quantity",
+        "amount.$": "$.validationOutput.amount",
+        "paymentMethod.$": "$.validationOutput.paymentMethod"
+      },
+      "Next": "ProcessPayment",
+      "ResultPath": "$.saveOrderOutput"
+    },
+    "ProcessPayment": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:processPaymentFunction",
+      "Parameters": {
+        "amount.$": "$.saveOrderOutput.amount",
+        "paymentMethod.$": "$.saveOrderOutput.paymentMethod",
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "customerEmail.$": "$.saveOrderOutput.customerEmail"
+      },
+      "Next": "UpdateInventory",
+      "ResultPath": "$.processPaymentOutput"
+    },
+    "UpdateInventory": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:updateInventoryFunction",
+      "Parameters": {
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "productId.$": "$.saveOrderOutput.productId",
+        "quantity.$": "$.saveOrderOutput.quantity"
+      },
+      "Next": "SendNotification",
+      "ResultPath": "$.updateInventoryOutput"
+    },
+    "SendNotification": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:sendNotificationFunction",
+      "Parameters": {
+        "email.$": "$.customerEmail",
+        "productId.$": "$.productId",
+        "quantity.$": "$.quantity"
+      },
+      "Next": "GenerateReceipt",
+      "ResultPath": "$.sendNotificationOutput"
+    },
+    "GenerateReceipt": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:generateReceiptFunction",
+      "Parameters": {
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "email.$": "$.saveOrderOutput.customerEmail",
+        "productId.$": "$.saveOrderOutput.productId",
+        "quantity.$": "$.saveOrderOutput.quantity"
+      },
+      "End": true,
+      "ResultPath": "$.generateReceiptOutput"
+    }
+  }
+}

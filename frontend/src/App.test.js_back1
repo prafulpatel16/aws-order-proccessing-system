@@ -1,0 +1,19 @@
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';  // Updated import
+//import OrderForm from './OrderForm.js';  // Import the OrderForm component
+
+// Example test suite
+describe('OrderForm Component', () => {
+  test('renders form elements correctly', () => {
+    render(<OrderForm />);
+
+    // Check that all form fields and button are rendered
+    expect(screen.getByLabelText(/Product ID/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Quantity/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Customer Email/i)).toBeInTheDocument();
+    expect(screen.getByText(/Place Order/i)).toBeInTheDocument();
+  });
+
+  // Add other tests as needed...
+});
