@@ -13,14 +13,41 @@ jobs:
       id-token: write  # Required to generate OIDC token
       contents: read   # Required to read repo contents
     steps:
+
+       # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::202533534284:role/awsGitHubActionsRole1
           aws-region: us-east-1
 
+       # Step 3: Set up Node.js environment
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      # Step 5: Build the frontend
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./frontend
+
+      # Step 6: Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: frontend/build/
+     
+      # Step 7: Deploy to S3
       - name: Deploy to S3
         run: aws s3 sync ./frontend/build s3://ordeprocess-frontend/ --delete
