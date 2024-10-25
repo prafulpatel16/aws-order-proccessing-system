@@ -5,129 +5,167 @@
 ![Untitled-2024-10-21-2003](https://github.com/user-attachments/assets/6324468f-4c46-421e-801b-64a880d1fec8)
 
 
-Project Use Case: Real-Time Order Processing System
+# Real-Time Order Processing System
 
-Architecture Overview:
+## Table of Contents
+- [Project Use Case](#project-use-case)
+- [Architecture Overview](#architecture-overview)
+- [Key Requirements](#key-requirements)
+- [Tech Stack](#tech-stack)
+- [Step-by-Step Implementation](#step-by-step-implementation)
+  - [1. Frontend (React + API Gateway)](#frontend-react--api-gateway)
+  - [2. API Gateway Setup](#api-gateway-setup)
+  - [3. AWS Step Functions](#aws-step-functions)
+  - [4. Order Validation Lambda](#order-validation-lambda)
+  - [5. Payment Processing Lambda](#payment-processing-lambda)
+  - [6. Update Inventory Lambda](#update-inventory-lambda)
+  - [7. Send Notification (SNS)](#send-notification-sns)
+  - [8. Generate and Store Receipt (S3)](#generate-and-store-receipt-s3)
+  - [9. Monitoring and Error Handling](#monitoring-and-error-handling)
+- [AWS Step Functions Workflow Example](#aws-step-functions-workflow-example)
+- [Benefits of this Approach](#benefits-of-this-approach)
+- [Project Structure](#project-structure)
+- [Project Implementation](#project-implementation)
+  - [DynamoDB Setup](#dynamodb-setup)
+  - [Lambda Function Deployment](#lambda-function)
+  - [S3 Frontend Deployment](#s3---static-webapp)
+- [Challenges & Troubleshooting](#challenges--troubleshooting)
+- [WebApp Test](#webapp-test)
+- [DevOps](#devops)
+  - [Source Code Management (Version Control)](#phase-1-source-code-management-version-control)
+  - [Continuous Integration (CI)](#phase-2-continuous-integration-ci)
+  - [Configure Secrets](#configure-secrets)
+- [Conclusion](#conclusion)
 
-User Interface (UI): A React frontend hosted on S3 and served via CloudFront.
+## Project Use Case
+This project demonstrates a real-time order processing system built using serverless architecture on AWS. It manages order placement, validation, payment, inventory updates, notifications, and receipt generation.
 
-Backend: API Gateway, AWS Lambda functions, Step Functions for order processing orchestration, and DynamoDB as the database.
+## Architecture Overview
+The system is designed using AWS services such as API Gateway, Lambda, Step Functions, DynamoDB, SNS, and S3. The architecture ensures scalability, availability, and real-time order processing.
 
-Additional Services: SNS for notifications, S3 for storing receipts, and CloudWatch for monitoring.
+## Key Requirements
+- Real-time order processing with low latency.
+- Secure and reliable API integration.
+- Seamless interaction between microservices.
+- Scalable and cost-effective solution.
 
-Key Requirements:
+## Tech Stack
+- **Frontend:** React
+- **Backend:** AWS Lambda, API Gateway, Step Functions
+- **Database:** DynamoDB
+- **Storage:** S3 for static assets and receipts
+- **Messaging:** SNS for notifications
+- **Infrastructure as Code:** AWS CloudFormation, Terraform
 
-Real-time Order Submission: Users can place orders through the e-commerce frontend.
+## Step-by-Step Implementation
 
-Order Validation: Validate the order, including checking stock availability and payment verification.
+### 1. Frontend (React + API Gateway)
+- Set up the React frontend to interact with the backend via API Gateway.
+- Deploy the frontend to S3 with CloudFront for content delivery and caching.
 
-Inventory Management: Deduct inventory once the order is placed.
+### 2. API Gateway Setup
+- Create REST API endpoints to trigger the Lambda functions.
 
-Payment Processing: Integrate with third-party payment gateways.
+### 3. AWS Step Functions
+- Design a Step Functions workflow to orchestrate the order processing tasks.
 
-Notification: Notify users via email when the order is successfully processed.
+### 4. Order Validation Lambda
+- Implement a Lambda function to validate order data received from the frontend.
 
-Store Order Receipts: Store the order details and generate a receipt to be stored in S3.
+### 5. Payment Processing Lambda
+- Create a Lambda function to handle payment processing and integration with a mock payment service.
 
-Monitoring: Use CloudWatch to monitor the flow, errors, and execution times.
+### 6. Update Inventory Lambda
+- Add a Lambda function to update inventory in the DynamoDB table after order placement.
 
-Step-by-Step Implementation:
+### 7. Send Notification (SNS)
+- Use SNS to send order confirmation notifications to customers.
 
-1. Frontend (React + API Gateway):
+### 8. Generate and Store Receipt (S3)
+- Generate an order receipt and store it in S3 for later retrieval.
 
-Create a React application for order submission.
+### 9. Monitoring and Error Handling
+- Implement CloudWatch for monitoring Lambda functions, API Gateway, and Step Functions.
 
-Host the React frontend in S3 with CloudFront for faster access.
+## AWS Step Functions Workflow Example
+```json
+{
+  "StartAt": "ValidateOrder",
+  "States": {
+    "ValidateOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:20534284:function:validateOrderFunction",
+      "Next": "SaveOrderToDatabase",
+      "ResultPath": "$.validationOutput"
+    },
+    "SaveOrderToDatabase": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:202534284:function:saveOrderFunction",
+      "Parameters": {
+        "OrderId.$": "$.validationOutput.OrderId",
+        "customerEmail.$": "$.validationOutput.customerEmail",
+        "productId.$": "$.validationOutput.productId",
+        "quantity.$": "$.validationOutput.quantity",
+        "amount.$": "$.validationOutput.amount",
+        "paymentMethod.$": "$.validationOutput.paymentMethod"
+      },
+      "Next": "ProcessPayment",
+      "ResultPath": "$.saveOrderOutput"
+    },
+    "ProcessPayment": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:225334284:function:processPaymentFunction",
+      "Parameters": {
+        "amount.$": "$.saveOrderOutput.amount",
+        "paymentMethod.$": "$.saveOrderOutput.paymentMethod",
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "customerEmail.$": "$.saveOrderOutput.customerEmail"
+      },
+      "Next": "UpdateInventory",
+      "ResultPath": "$.processPaymentOutput"
+    },
+    "UpdateInventory": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:203534284:function:updateInventoryFunction",
+      "Parameters": {
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "productId.$": "$.saveOrderOutput.productId",
+        "quantity.$": "$.saveOrderOutput.quantity"
+      },
+      "Next": "SendNotification",
+      "ResultPath": "$.updateInventoryOutput"
+    },
+    "SendNotification": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:20253284:function:sendNotificationFunction",
+      "Parameters": {
+        "email.$": "$.customerEmail",
+        "productId.$": "$.productId",
+        "quantity.$": "$.quantity"
+      },
+      "Next": "GenerateReceipt",
+      "ResultPath": "$.sendNotificationOutput"
+    },
+    "GenerateReceipt": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:20253384:function:generateReceiptFunction",
+      "Parameters": {
+        "OrderId.$": "$.saveOrderOutput.OrderId",
+        "email.$": "$.saveOrderOutput.customerEmail",
+        "productId.$": "$.saveOrderOutput.productId",
+        "quantity.$": "$.saveOrderOutput.quantity"
+      },
+      "End": true,
+      "ResultPath": "$.generateReceiptOutput"
+    }
+  }
+}
 
-The frontend sends an API request to the API Gateway to submit the order.
-
-API Gateway triggers a Lambda function to start the process.
-
-2. API Gateway Setup:
-
-Configure AWS API Gateway to expose a REST API with a /place-order endpoint.
-
-This API will trigger an AWS Lambda function (OrderPlacementFunction).
-
-The Lambda function will initiate an AWS Step Functions workflow.
-
-3. AWS Step Functions:
-
-Define a Step Function to manage the order processing workflow.
-
-The workflow consists of multiple states:
-
-Validate Order: Check for stock availability using Lambda.
-
-Process Payment: Trigger payment processing using a Lambda function.
-
-Update Inventory: Once payment is successful, deduct the inventory.
-
-Send Notification: Send a confirmation email via SNS.
-
-Generate Receipt: Store the order receipt in S3 using Lambda.
-
-4. Order Validation Lambda:
-
-Create a Lambda function (ValidateOrderFunction) that validates the stock availability by querying DynamoDB.
-
-If the item is in stock, the workflow proceeds to payment processing.
-
-5. Payment Processing Lambda:
-
-Lambda function (ProcessPaymentFunction) integrates with a third-party payment service (e.g., Stripe).
-
-After successful payment, update the payment status in DynamoDB.
-
-6. Update Inventory Lambda:
-
-Lambda function (UpdateInventoryFunction) updates the inventory in DynamoDB once the payment is processed.
-
-If inventory update fails, trigger a rollback or handle errors via a defined Step Functions fail state.
-
-7. Send Notification (SNS):
-
-Create an SNS topic to send a notification to the user about the order status.
-
-Lambda function (SendNotificationFunction) triggers SNS to send an email with the order details to the user.
-
-8. Generate and Store Receipt (S3):
-
-Lambda function (GenerateReceiptFunction) generates a receipt for the order and stores it in an S3 bucket.
-
-A presigned URL is generated for users to download the receipt.
-
-9. Monitoring and Error Handling:
-
-Use AWS CloudWatch to track the workflow and log errors.
-
-Step Functions should have proper error handling with retry logic or defined failure states.
-
-CloudWatch metrics and alarms can be set to monitor for errors in the order process.
 
 
-Architecture Overview:
 
-Frontend (React): A simple order form hosted in an S3 bucket.
 
-API Gateway: To handle order submission requests.
 
-Lambda: Multiple Lambda functions for each stage of the order processing.
-
-Step Functions: Orchestration for the order processing workflow.
-
-DynamoDB: For storing orders and inventory data.
-
-SQS: Queue to process background tasks like sending notifications and generating receipts.
-
-SNS: For real-time notifications to users.
-
-S3: For storing order receipts.
-
-CloudWatch: For monitoring and error logging.
-
-Project Structure:
-![image](https://github.com/user-attachments/assets/0cffd3ce-70ee-42f3-8f6a-1a1a85e58aa8)
 
 
 
