@@ -145,7 +145,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
 - Implement CloudWatch for monitoring Lambda functions, API Gateway, and Step Functions.
 
 ## AWS Step Functions Workflow Example
-```json
+
 {
   "StartAt": "ValidateOrder",
   "States": {
@@ -171,7 +171,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     },
     "ProcessPayment": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:225334284:function:processPaymentFunction",
+      "Resource": "arn:aws:lambda:us-east-1:22534284:function:processPaymentFunction",
       "Parameters": {
         "amount.$": "$.saveOrderOutput.amount",
         "paymentMethod.$": "$.saveOrderOutput.paymentMethod",
@@ -218,20 +218,20 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
   }
 }
 
-##Frontend Web Application
-![image](https://github.com/user-attachments/assets/b732ef30-45f6-4fc7-89b9-50ad76cac59e)
+
+## Frontend Web Application
+![Frontend Web Application](https://github.com/user-attachments/assets/b732ef30-45f6-4fc7-89b9-50ad76cac59e)
 
 ## Step Functions
-![image](https://github.com/user-attachments/assets/ec394ad8-6e18-4c89-a65c-e5a2b3599383)
+![Step Functions](https://github.com/user-attachments/assets/ec394ad8-6e18-4c89-a65c-e5a2b3599383)
 
- # Step functions - Successed
-![image](https://github.com/user-attachments/assets/df9a297e-7f87-4f6a-82d1-8e3aeafcd8c2)
+## Step Functions-Success
+![Step Functions-Success](https://github.com/user-attachments/assets/df9a297e-7f87-4f6a-82d1-8e3aeafcd8c2)
 
- # Step workflows
-![image](https://github.com/user-attachments/assets/ed27a678-092f-4562-a79f-b585ad89c5b8)
+## Step Workflows
+![Step Workflows](https://github.com/user-attachments/assets/ed27a678-092f-4562-a79f-b585ad89c5b8)
 
-![image](https://github.com/user-attachments/assets/f1e7be7b-abc1-4d31-824f-73696975962a)
-
+![Step Workflow Details](https://github.com/user-attachments/assets/f1e7be7b-abc1-4d31-824f-73696975962a)
 
 
 
