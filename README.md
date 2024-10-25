@@ -57,12 +57,7 @@ The system is designed using AWS services such as API Gateway, Lambda, Step Func
 - **Messaging:** SNS for notifications
 - **Infrastructure as Code:** AWS CloudFormation, Terraform
 
-## Step-by-Step Implementation
 
-
-Here's a detailed `README.md` for the architecture overview and key requirements of your real-time order processing system:
-
-```markdown
 # Real-Time Order Processing System
 
 ## Architecture Overview
@@ -118,6 +113,8 @@ The real-time order processing system is designed with a serverless architecture
 ## Conclusion
 The architecture ensures a seamless, scalable, and reliable order processing system with real-time data handling, secure transactions, and effective user notifications. The integration of AWS services enables cost-effective scaling, while monitoring tools ensure robust error handling and performance tracking.
 
+
+## Step-by-Step Implementation
 
 ### 1. Frontend (React + API Gateway)
 - Set up the React frontend to interact with the backend via API Gateway.
