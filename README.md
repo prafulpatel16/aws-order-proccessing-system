@@ -270,10 +270,21 @@ Order No: 3625 Receipt
 
 ![image](https://github.com/user-attachments/assets/3605cf10-6f72-463e-be41-44314c996c6c)
 
-## JSON Output
-## Order Processing System - JSON Output
+## CloudWatch Logs
 
-### Sample Output
+  Log Groups
+  ![image](https://github.com/user-attachments/assets/60814ad5-1d4f-48d6-a820-ebeb2d0a383e)
+
+  ![image](https://github.com/user-attachments/assets/f8d795da-a270-4e33-a969-f14e6a30f0f9)
+
+  ![image](https://github.com/user-attachments/assets/b0313226-4963-4032-914b-6fd9ac215863)
+
+  ![image](https://github.com/user-attachments/assets/7c471ab9-9815-472f-915d-cea64705f893)
+
+
+
+## JSON Output
+
 ```json
 {
   "output": {
@@ -349,6 +360,12 @@ Order No: 3625 Receipt
   - Confirms that the receipt was generated and saved to S3, with a link to the receipt.
 
 
+## DevOps Implementation
+
+  # GitHub Actions
+  TO automate the frontend web app deployment to aws S3 for static web content
+
+![image](https://github.com/user-attachments/assets/066a1432-8b7b-4292-94e4-560a04c94f33)
 
 
 
