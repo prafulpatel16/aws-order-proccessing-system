@@ -210,57 +210,6 @@ Log Groups
 ![image](https://github.com/user-attachments/assets/7c471ab9-9815-472f-915d-cea64705f893)
 
 
-
-## JSON Output
-
-```json
-{
-  "output": {
-    "productId": "P001",
-    "quantity": 1,
-    "customerEmail": "cust@gmail.com",
-    "validationOutput": {
-      "status": "VALID",
-      "OrderId": "3625",
-      "productId": "P001",
-      "quantity": 1,
-      "customerEmail": "cust@gmail.com",
-      "amount": 100,
-      "paymentMethod": "creditCard"
-    },
-    "saveOrderOutput": {
-      "statusCode": 200,
-      "message": "Order successfully saved",
-      "OrderId": "3625",
-      "amount": 100,
-      "customerEmail": "cust@gmail.com",
-      "productId": "P001",
-      "quantity": 1,
-      "paymentMethod": "creditCard"
-    },
-    "processPaymentOutput": {
-      "statusCode": 500,
-      "message": "Failed to save order to database",
-      "error": "'productId' and 'quantity' are required fields"
-    },
-    "updateInventoryOutput": {
-      "statusCode": 200,
-      "body": "{\"message\": \"Inventory updated successfully\", \"OrderId\": \"3625\", \"productId\": \"P001\", \"quantity\": 1}"
-    },
-    "sendNotificationOutput": {
-      "statusCode": 200,
-      "body": "{\"message\": \"Notification sent successfully\", \"orderId\": null, \"email\": \"cust@gmail.com\"}"
-    },
-    "generateReceiptOutput": {
-      "statusCode": 200,
-      "body": "{\"message\": \"Receipt generated and saved successfully\", \"receiptUrl\": \"s3://order-receipt-2024/receipts/3625.json\"}"
-    }
-  },
-  "outputDetails": {
-    "truncated": false
-  }
-}
-
 ## Description of Output
 
 - **productId**: Product identifier for the order.
