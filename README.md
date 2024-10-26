@@ -362,12 +362,88 @@ Order No: 3625 Receipt
 
 ## DevOps Implementation
 
-  # GitHub Actions
-  TO automate the frontend web app deployment to aws S3 for static web content
+# GitHub Actions
+TO automate the frontend web app deployment to aws S3 for static web content
 
 ![image](https://github.com/user-attachments/assets/066a1432-8b7b-4292-94e4-560a04c94f33)
 
+![image](https://github.com/user-attachments/assets/dcdc6d58-5d16-46f2-9f16-b851b8b1b290)
 
+![image](https://github.com/user-attachments/assets/5e05a00f-a665-41f8-a12b-109deec7ba17)
+
+![image](https://github.com/user-attachments/assets/35b64cfd-e987-401f-9fd7-b9efefdb4c93)
+
+
+## frontend-ci.yml
+## Frontend CI Pipeline
+
+This GitHub Actions workflow automates the build and deployment process for the frontend of the order processing system. It runs on every push to the `master` branch, deploying the built artifacts to an S3 bucket.
+
+### Workflow Configuration
+
+```yaml
+name: Frontend CI Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required to generate OIDC token
+      contents: read   # Required to read repo contents
+    steps:
+
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Configure AWS Credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::202533534284:role/awsGitHubActionsRole1
+          aws-region: us-east-1
+
+      # Step 3: Set up Node.js environment
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      # Step 5: Build the frontend
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./frontend
+
+      # Step 6: Upload build artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: frontend/build/
+
+      # Step 7: Deploy to S3
+      - name: Deploy to S3
+        run: aws s3 sync ./frontend/build s3://ordeprocess-frontend/ --delete
+
+
+## Steps Breakdown
+# Checkout Code: Uses the actions/checkout@v3 action to pull the repository code.
+# Configure AWS Credentials: Uses aws-actions/configure-aws-credentials@v4 to set up AWS credentials for deployment.
+# Install Node.js: Sets up Node.js v14 for building the frontend.
+# Install Dependencies: Installs the frontend dependencies using npm install.
+# Build Frontend: Builds the React application using npm run build.
+# Upload Build Artifacts: Uses actions/upload-artifact@v3 to upload the build artifacts for further use.
+# Deploy to S3: Deploys the built frontend to the specified S3 bucket.
 
 
 
