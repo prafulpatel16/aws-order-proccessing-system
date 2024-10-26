@@ -144,20 +144,21 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
 ### 9. Monitoring and Error Handling
 - Implement CloudWatch for monitoring Lambda functions, API Gateway, and Step Functions.
 
-## AWS Step Functions Workflow Example
+## AWS Step Functions Definition
 
+```json
 {
   "StartAt": "ValidateOrder",
   "States": {
     "ValidateOrder": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:20534284:function:validateOrderFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:validateOrderFunction",
       "Next": "SaveOrderToDatabase",
       "ResultPath": "$.validationOutput"
     },
     "SaveOrderToDatabase": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:202534284:function:saveOrderFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:saveOrderFunction",
       "Parameters": {
         "OrderId.$": "$.validationOutput.OrderId",
         "customerEmail.$": "$.validationOutput.customerEmail",
@@ -171,7 +172,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     },
     "ProcessPayment": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:22534284:function:processPaymentFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:processPaymentFunction",
       "Parameters": {
         "amount.$": "$.saveOrderOutput.amount",
         "paymentMethod.$": "$.saveOrderOutput.paymentMethod",
@@ -183,7 +184,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     },
     "UpdateInventory": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:203534284:function:updateInventoryFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:updateInventoryFunction",
       "Parameters": {
         "OrderId.$": "$.saveOrderOutput.OrderId",
         "productId.$": "$.saveOrderOutput.productId",
@@ -194,7 +195,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     },
     "SendNotification": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:20253284:function:sendNotificationFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:sendNotificationFunction",
       "Parameters": {
         "email.$": "$.customerEmail",
         "productId.$": "$.productId",
@@ -205,7 +206,7 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     },
     "GenerateReceipt": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:20253384:function:generateReceiptFunction",
+      "Resource": "arn:aws:lambda:us-east-1:202533534284:function:generateReceiptFunction",
       "Parameters": {
         "OrderId.$": "$.saveOrderOutput.OrderId",
         "email.$": "$.saveOrderOutput.customerEmail",
@@ -217,8 +218,6 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
     }
   }
 }
-
-
 ## Frontend Web Application
 ![Frontend Web Application](https://github.com/user-attachments/assets/b732ef30-45f6-4fc7-89b9-50ad76cac59e)
 
@@ -233,6 +232,121 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
 
 ![Step Workflow Details](https://github.com/user-attachments/assets/f1e7be7b-abc1-4d31-824f-73696975962a)
 
+  Order Created : Order NO: 3625
+  ![image](https://github.com/user-attachments/assets/eaf5fa34-fc67-4acd-9ce9-bbc1861c1fa2)
+
+  Receipt Generated
+  ![image](https://github.com/user-attachments/assets/643ceba0-b0aa-4279-966f-25d664c0641d)
+
+  Step Succssed
+  ![image](https://github.com/user-attachments/assets/2c8cbffb-3a15-4ba5-ad19-ffe99d185429)
+
+
+## Lambda Functions
+
+OrderPlacementFunction
+
+![image](https://github.com/user-attachments/assets/546ca862-8f5c-4569-9752-c642f8862ed9)
+
+## DynamoDB Tables
+
+![image](https://github.com/user-attachments/assets/d9775b9f-74c1-4dab-b096-0cc16c54612b)
+
+  Inventory Table
+  ![image](https://github.com/user-attachments/assets/085bec63-af5e-484b-a470-0e4b7c19d68c)
+
+  Order Table
+  ![image](https://github.com/user-attachments/assets/220d1d23-d51c-4d11-9dbc-30e1504019b5)
+
+  Order No: 3625 
+  ![image](https://github.com/user-attachments/assets/082e19c2-17a2-4753-87f1-835db68e0866)
+
+
+## Order Receipt Generated and stored to S3 Table
+![image](https://github.com/user-attachments/assets/ae8d98aa-f303-44ac-bb02-2d8ee2360e47)
+
+Order No: 3625 Receipt
+![image](https://github.com/user-attachments/assets/cf89d2da-f2a7-403f-9371-05c70d220f2a)
+
+![image](https://github.com/user-attachments/assets/3605cf10-6f72-463e-be41-44314c996c6c)
+
+## JSON Output
+## Order Processing System - JSON Output
+
+### Sample Output
+```json
+{
+  "output": {
+    "productId": "P001",
+    "quantity": 1,
+    "customerEmail": "cust@gmail.com",
+    "validationOutput": {
+      "status": "VALID",
+      "OrderId": "3625",
+      "productId": "P001",
+      "quantity": 1,
+      "customerEmail": "cust@gmail.com",
+      "amount": 100,
+      "paymentMethod": "creditCard"
+    },
+    "saveOrderOutput": {
+      "statusCode": 200,
+      "message": "Order successfully saved",
+      "OrderId": "3625",
+      "amount": 100,
+      "customerEmail": "cust@gmail.com",
+      "productId": "P001",
+      "quantity": 1,
+      "paymentMethod": "creditCard"
+    },
+    "processPaymentOutput": {
+      "statusCode": 500,
+      "message": "Failed to save order to database",
+      "error": "'productId' and 'quantity' are required fields"
+    },
+    "updateInventoryOutput": {
+      "statusCode": 200,
+      "body": "{\"message\": \"Inventory updated successfully\", \"OrderId\": \"3625\", \"productId\": \"P001\", \"quantity\": 1}"
+    },
+    "sendNotificationOutput": {
+      "statusCode": 200,
+      "body": "{\"message\": \"Notification sent successfully\", \"orderId\": null, \"email\": \"cust@gmail.com\"}"
+    },
+    "generateReceiptOutput": {
+      "statusCode": 200,
+      "body": "{\"message\": \"Receipt generated and saved successfully\", \"receiptUrl\": \"s3://order-receipt-2024/receipts/3625.json\"}"
+    }
+  },
+  "outputDetails": {
+    "truncated": false
+  }
+}
+
+## Description of Output
+
+- **productId**: Product identifier for the order.
+- **quantity**: Number of items ordered.
+- **customerEmail**: Email of the customer placing the order.
+
+### Detailed Outputs
+
+- **validationOutput**:
+  - Status of the order validation, including order ID, product details, amount, and payment method.
+
+- **saveOrderOutput**:
+  - Status of the order-saving process, indicating success with a 200 status code.
+
+- **processPaymentOutput**:
+  - Status of the payment processing; includes a 500 error due to missing fields.
+
+- **updateInventoryOutput**:
+  - Confirms successful inventory update with status code 200.
+
+- **sendNotificationOutput**:
+  - Indicates successful notification sending with status code 200.
+
+- **generateReceiptOutput**:
+  - Confirms that the receipt was generated and saved to S3, with a link to the receipt.
 
 
 
