@@ -232,14 +232,14 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
 
 ![Step Workflow Details](https://github.com/user-attachments/assets/f1e7be7b-abc1-4d31-824f-73696975962a)
 
-  Order Created : Order NO: 3625
-  ![image](https://github.com/user-attachments/assets/eaf5fa34-fc67-4acd-9ce9-bbc1861c1fa2)
+Order Created : Order NO: 3625
+![image](https://github.com/user-attachments/assets/eaf5fa34-fc67-4acd-9ce9-bbc1861c1fa2)
 
-  Receipt Generated
-  ![image](https://github.com/user-attachments/assets/643ceba0-b0aa-4279-966f-25d664c0641d)
+Receipt Generated
+![image](https://github.com/user-attachments/assets/643ceba0-b0aa-4279-966f-25d664c0641d)
 
-  Step Succssed
-  ![image](https://github.com/user-attachments/assets/2c8cbffb-3a15-4ba5-ad19-ffe99d185429)
+Step Succssed
+![image](https://github.com/user-attachments/assets/2c8cbffb-3a15-4ba5-ad19-ffe99d185429)
 
 
 ## Lambda Functions
@@ -252,14 +252,14 @@ OrderPlacementFunction
 
 ![image](https://github.com/user-attachments/assets/d9775b9f-74c1-4dab-b096-0cc16c54612b)
 
-  Inventory Table
-  ![image](https://github.com/user-attachments/assets/085bec63-af5e-484b-a470-0e4b7c19d68c)
+Inventory Table
+![image](https://github.com/user-attachments/assets/085bec63-af5e-484b-a470-0e4b7c19d68c)
 
-  Order Table
-  ![image](https://github.com/user-attachments/assets/220d1d23-d51c-4d11-9dbc-30e1504019b5)
+Order Table
+![image](https://github.com/user-attachments/assets/220d1d23-d51c-4d11-9dbc-30e1504019b5)
 
-  Order No: 3625 
-  ![image](https://github.com/user-attachments/assets/082e19c2-17a2-4753-87f1-835db68e0866)
+Order No: 3625 
+![image](https://github.com/user-attachments/assets/082e19c2-17a2-4753-87f1-835db68e0866)
 
 
 ## Order Receipt Generated and stored to S3 Table
@@ -272,14 +272,14 @@ Order No: 3625 Receipt
 
 ## CloudWatch Logs
 
-  Log Groups
-  ![image](https://github.com/user-attachments/assets/60814ad5-1d4f-48d6-a820-ebeb2d0a383e)
+Log Groups
+![image](https://github.com/user-attachments/assets/60814ad5-1d4f-48d6-a820-ebeb2d0a383e)
 
-  ![image](https://github.com/user-attachments/assets/f8d795da-a270-4e33-a969-f14e6a30f0f9)
+![image](https://github.com/user-attachments/assets/f8d795da-a270-4e33-a969-f14e6a30f0f9)
 
-  ![image](https://github.com/user-attachments/assets/b0313226-4963-4032-914b-6fd9ac215863)
+![image](https://github.com/user-attachments/assets/b0313226-4963-4032-914b-6fd9ac215863)
 
-  ![image](https://github.com/user-attachments/assets/7c471ab9-9815-472f-915d-cea64705f893)
+![image](https://github.com/user-attachments/assets/7c471ab9-9815-472f-915d-cea64705f893)
 
 
 
