@@ -1,59 +1,51 @@
 import json
-import os
 import boto3
 
 # Initialize the SNS client
-sns = boto3.client('sns')
+sns = boto3.client('sns', region_name='us-east-1')  # Specify the region if needed
 
 def lambda_handler(event, context):
     try:
-        # Log the entire event to inspect the input
+        # Log the incoming event
         print(f"Received event: {event}")
 
-        # Ensure orderId and email are present
-        order_id = event.get('OrderId')
-        email = event.get('email')
+        # Get the required fields from the event
+        order_id = event.get('orderId')
+        email = event.get('email')  # Ensure this field is included in the event
+        product_id = event.get('productId')
+        quantity = event.get('quantity')
 
-        if not order_id:
-            raise Exception("'OrderId' is required but not found in the event")
         if not email:
             raise Exception("'email' is required but not found in the event")
 
-        # Define the message body for the notification
-        message_body = {
-            'OrderId': order_id,
-            'email': email,
-            'message': 'Your order has been successfully processed!'
-        }
+        # Construct the message
+        message = f"Your order (Order ID: {order_id}) for Product ID: {product_id} with quantity {quantity} has been successfully processed."
 
-        # Get the SNS topic ARN from environment variables and ensure it has no extra spaces
-        topic_arn = os.environ['SNS_TOPIC_ARN'].strip()
+        # Log the message
+        print(f"Sending notification: {message}")
 
-        # Log the parameters for the SNS publish operation
-        print(f"Publishing message to SNS topic {topic_arn} with body: {message_body}")
-
-        # Publish the message to the SNS topic
+        # Send the notification using SNS
         response = sns.publish(
-            TopicArn=topic_arn,
-            Message=json.dumps(message_body),
-            Subject='Order Processed Notification'
+            Message=message,
+            Subject="Order Confirmation",
+            TopicArn='arn:aws:sns:us-east-1:202533534284:orderEmailNotification'
         )
 
-        # Log the successful response from SNS
-        print(f"SNS publish response: {response}")
+        # Log the SNS response
+        print(f"SNS Publish Response: {response}")
 
         return {
             'statusCode': 200,
             'body': json.dumps({
                 'message': 'Notification sent successfully',
-                'OrderId': order_id,
-                'email': email
+                'orderId': order_id,
+                'email': email,
+                'sns_response': response  # Include response for debugging
             })
         }
 
     except Exception as e:
-        # Log the error and raise an exception with a clear message
-        print(f"Error: {e}")
+        print(f"Error sending notification: {e}")
         return {
             'statusCode': 500,
             'body': json.dumps({

@@ -24,7 +24,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::202533534284:role/awsGitHubActionsRole1
           aws-region: us-east-1
-
+  
        # Step 3: Set up Node.js environment
       - name: Install Node.js
         uses: actions/setup-node@v2
