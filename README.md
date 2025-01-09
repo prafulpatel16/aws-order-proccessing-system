@@ -10,6 +10,9 @@
 
 # Real-Time Order Processing System
 
+# Application User Interface
+![alt text](image-3.png)
+
 ## Table of Contents
 - [Project Use Case](#project-use-case)
 - [Architecture Overview](#architecture-overview)
@@ -181,6 +184,8 @@ This project exemplifies an **event-driven serverless architecture**, leveraging
 ### User Interface (UI)
 - **Frontend:** Built with React, hosted on AWS S3, and delivered via AWS CloudFront for global reach and caching.
 - **Purpose:** Provides a seamless user experience for order placement and status updates.
+- Note: Improved Frontend UI interface
+![alt text](image-2.png) 
 
 ### Backend
 - **API Gateway:** Serves as the entry point for all API requests from the frontend.
