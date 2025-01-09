@@ -71,7 +71,7 @@ function OrderForm() {
   return (
     <div className="order-form-container">
       {/* Logo Section */}
-      <div className="logo-container">
+      <div className="logo-container-vertical">
         <img src={awsLogo} alt="AWS Logo" className="logo aws-logo" />
         <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
       </div>

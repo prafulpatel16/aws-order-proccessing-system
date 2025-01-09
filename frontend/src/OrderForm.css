@@ -5,19 +5,17 @@ body {
   padding: 0;
 }
 
-.logo-container {
+.logo-container-vertical {
   display: flex;
-  justify-content: center; /* Center align the logos */
-  align-items: center;
-  gap: 15px; /* Add space between the logos */
+  flex-direction: column; /* Make the logos stack vertically */
+  align-items: center; /* Center align the logos */
   margin-bottom: 20px;
 }
 
 .logo {
   max-width: 150px;
-  height: auto;
+  margin-bottom: 10px; /* Add space between the logos */
 }
-
 
 .order-form-container {
   display: flex;
