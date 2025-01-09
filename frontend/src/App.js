@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './OrderForm.css'; // Import CSS for styling
 import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa'; // Import icons
-import awsLogo from './aws-logo.png'; // Add AWS logo file in your project
-import prafulLogo from './praful-logo.png'; // Add Praful logo file in your project
+import awsLogo from './aws-logo.png'; // AWS logo file
+import prafulLogo from './praful-logo.png'; // Praful logo file
+import awsComLogo from './aws-com-logo.png'; // AWS.com logo file
 
 function OrderForm() {
   const [productId, setProductId] = useState('');
@@ -70,12 +71,16 @@ function OrderForm() {
         <div className="left-section">
           <img src={awsLogo} alt="AWS Logo" className="logo" />
           <img src={prafulLogo} alt="Praful Logo" className="logo" />
+          <img src={awsComLogo} alt="AWS.com Logo" className="logo aws-com-logo" />
         </div>
 
         {/* Middle Section: Form */}
         <div className="middle-section">
           <div className="time-display">{currentTime.toLocaleString()}</div>
-          <h1 className="title">AWS Serverless Project - Order Processing System</h1>
+          <h1 className="title">
+            AWS Serverless Project
+            <span className="subtitle">ORDER PROCESSING SYSTEM</span>
+          </h1>
           <form onSubmit={handleSubmit} className="order-form">
             <div className="form-group">
               <label>Product ID:</label>
