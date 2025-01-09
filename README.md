@@ -24,6 +24,7 @@
   - [6. Update Inventory Lambda](#update-inventory-lambda)
   - [7. Send Notification (SNS)](#send-notification-sns)
   - [8. Generate and Store Receipt (S3)](#generate-and-store-receipt-s3)
+           [Order Receipt PDF Generation](orderReceiptPdfGeneration.md)
   - [9. Monitoring and Error Handling](#monitoring-and-error-handling)
 - [AWS Step Functions Workflow Example](#aws-step-functions-workflow-example)
 - [Benefits of this Approach](#benefits-of-this-approach)
