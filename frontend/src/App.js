@@ -18,7 +18,6 @@ function OrderForm() {
       setCurrentTime(new Date());
     }, 1000);
 
-    // Clean up the timer when the component is unmounted
     return () => clearInterval(timer);
   }, []);
 
@@ -53,13 +52,11 @@ function OrderForm() {
           setQuantity(1);
           setCustomerEmail('');
           setOrderId(orderNumber); // Set the order number
-          setSuccessMessage('Order placed successfully!'); // Set success message
+          setSuccessMessage('Order placed successfully!');
         } else {
           setSuccessMessage('Order placed successfully, but no Order Number returned.');
         }
       } else {
-        const errorResult = await response.json();
-        console.error('Error placing order:', errorResult);
         setSuccessMessage('Failed to place order. Please try again.');
       }
     } catch (error) {
@@ -82,7 +79,7 @@ function OrderForm() {
 
         {/* Left Panel - Main Form */}
         <div className="left-panel">
-          {/* Display current date and time at the top */}
+          {/* Display current date and time */}
           <div className="time-display">{currentTime.toLocaleString()}</div>
 
           <h1 className="title">AWS Serverless Project - Order Processing System</h1>
@@ -120,9 +117,8 @@ function OrderForm() {
             </div>
             <button type="submit" className="submit-button">Place Order</button>
 
-            {/* Display success message below the button */}
+            {/* Success and Error Messages */}
             {successMessage && <p className="success-message">{successMessage}</p>}
-            {/* Display the Order Number */}
             {orderId && <p className="order-number">Order Number: <span>{orderId}</span></p>}
           </form>
 
@@ -134,7 +130,7 @@ function OrderForm() {
             <a href="https://linkedin.com/in/prafulpatel16" target="_blank" rel="noopener noreferrer">
               <FaLinkedin className="social-icon" /> LinkedIn
             </a>
-            <a href="https://github.com/prafulpatel16/prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/prafulpatel16" target="_blank" rel="noopener noreferrer">
               <FaGithub className="social-icon" /> GitHub
             </a>
             <a href="https://www.youtube.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
@@ -157,6 +153,19 @@ function OrderForm() {
               </a>
             </p>
           </div>
+        </div>
+
+        {/* Right Panel - Tech Stack */}
+        <div className="right-panel">
+          <h2>Tech Stack</h2>
+          <ul>
+            <li><span>Frontend:</span> React</li>
+            <li><span>Backend:</span> AWS Lambda, API Gateway, Step Functions</li>
+            <li><span>Database:</span> DynamoDB</li>
+            <li><span>Storage:</span> S3 for static assets and receipts</li>
+            <li><span>Messaging:</span> SNS for notifications</li>
+            <li><span>Infrastructure as Code:</span> AWS CloudFormation, Terraform</li>
+          </ul>
         </div>
       </div>
     </div>
