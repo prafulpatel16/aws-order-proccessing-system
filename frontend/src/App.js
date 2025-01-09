@@ -3,7 +3,7 @@ import './OrderForm.css'; // Import CSS for styling
 import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa'; // Import icons
 import awsLogo from './aws-logo.png'; // AWS logo file
 import prafulLogo from './praful-logo.png'; // Praful logo file
-import awsComLogo from './aws-com-logo.png'; // AWS.com logo file
+import awsComLogo from './AWS-com-logo.png'; // AWS.com logo file
 
 function OrderForm() {
   const [productId, setProductId] = useState('');
