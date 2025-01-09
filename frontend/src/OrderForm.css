@@ -130,3 +130,36 @@ button.submit-button:hover {
   font-size: 0.9rem;
   color: #888;
 }
+.right-panel {
+  flex: 1;
+  margin-left: 20px;
+  padding: 20px;
+  background-color: #ffedcc; /* Light orange background */
+  border: 1px solid #ff8c00; /* Orange border */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.right-panel h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #ff8c00; /* Orange color */
+  text-align: center;
+}
+
+.right-panel ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.right-panel ul li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.right-panel ul li span {
+  font-weight: bold;
+  color: #ff8c00; /* Orange color */
+}

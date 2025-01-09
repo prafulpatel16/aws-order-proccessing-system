@@ -68,17 +68,14 @@ function OrderForm() {
   return (
     <div className="order-form-container">
       <div className="content-container">
-        {/* Logo Section */}
-        <div className="logo-section">
-          <img src={awsLogo} alt="AWS Logo" className="logo aws-logo" />
-          <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
-        </div>
-
-        {/* Vertical Separator */}
-        <div className="vertical-separator"></div>
-
-        {/* Left Panel - Main Form */}
+        {/* Left Panel */}
         <div className="left-panel">
+          {/* Logo Section */}
+          <div className="logo-section">
+            <img src={awsLogo} alt="AWS Logo" className="logo aws-logo" />
+            <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
+          </div>
+
           {/* Display current date and time */}
           <div className="time-display">{currentTime.toLocaleString()}</div>
 
