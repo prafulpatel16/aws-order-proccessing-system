@@ -312,7 +312,9 @@ Order No: 3625 Receipt
 
 ![image](https://github.com/user-attachments/assets/3605cf10-6f72-463e-be41-44314c996c6c)
 
-# Pdf receipt generated
+
+- Note: Improvement: In earlier version order receipt was generated as JSON doc, but in this version it has coverted into pdf format. 
+## Pdf receipt generated
 
 ![alt text](OrderProcess.png)
 ![alt text](email.png)
