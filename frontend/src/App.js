@@ -72,8 +72,8 @@ function OrderForm() {
     <div className="order-form-container">
       {/* Logo Section */}
       <div className="logo-container">
-        <img src={awsLogo} alt="AWS Logo" className="logo" />
-        <img src={prafulLogo} alt="Praful Logo" className="logo" />
+        <img src={awsLogo} alt="AWS Logo" className="logo aws-logo" />
+        <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
       </div>
 
       {/* Left Panel - Main Form */}
