@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './OrderForm.css'; // Import CSS for styling
 import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa'; // Import icons
+import awsLogo from './aws-logo.png'; // Add an AWS logo file in your project
+
 
 function OrderForm() {
   const [productId, setProductId] = useState('');
@@ -68,6 +70,7 @@ function OrderForm() {
       {/* Left Panel - Main Form */}
       <div className="left-panel">
         {/* Display current date and time at the top */}
+        <img src={awsLogo} alt="AWS Logo" style={{ maxWidth: '150px', marginBottom: '20px' }} />
         <div className="time-display">{currentTime.toLocaleString()}</div>
 
         <h1 className="title">AWS Serverless Project - Order Processing System</h1>
