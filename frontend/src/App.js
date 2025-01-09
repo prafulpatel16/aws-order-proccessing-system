@@ -76,6 +76,11 @@ function OrderForm() {
         <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
       </div>
 
+      {/* Separator Line */}
+      <div className="separator">
+        <hr className="styled-line" />
+      </div>
+
       {/* Left Panel - Main Form */}
       <div className="left-panel">
         {/* Display current date and time at the top */}
@@ -91,6 +96,7 @@ function OrderForm() {
               value={productId}
               onChange={(e) => setProductId(e.target.value)}
               required
+              className="reduced-textbox"
             />
           </div>
           <div className="form-group">
@@ -100,6 +106,7 @@ function OrderForm() {
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               required
+              className="reduced-textbox"
             />
           </div>
           <div className="form-group">
@@ -109,6 +116,7 @@ function OrderForm() {
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
               required
+              className="reduced-textbox"
             />
           </div>
           <button type="submit" className="submit-button">Place Order</button>

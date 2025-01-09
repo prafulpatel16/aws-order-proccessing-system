@@ -7,14 +7,39 @@ body {
 
 .logo-container-vertical {
   display: flex;
-  flex-direction: column; /* Make the logos stack vertically */
-  align-items: center; /* Center align the logos */
+  flex-direction: column; /* Stack logos vertically */
+  align-items: center; /* Center align logos */
   margin-bottom: 20px;
 }
 
 .logo {
   max-width: 150px;
-  margin-bottom: 10px; /* Add space between the logos */
+  margin-bottom: 10px; /* Add space between logos */
+}
+
+.separator {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.styled-line {
+  border: none;
+  border-top: 2px solid #ff8c00; /* Orange color */
+  width: 80%;
+  margin: 0 auto;
+}
+
+.reduced-textbox {
+  width: 70%; /* Reduce textbox width */
+}
+
+.form-group {
+  margin-bottom: 20px; /* Add spacing between form fields */
+}
+
+.submit-button {
+  margin-top: 20px;
 }
 
 .order-form-container {
