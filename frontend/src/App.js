@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './OrderForm.css';  // Import CSS for styling
-import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa';  // Import icons
+import './OrderForm.css'; // Import CSS for styling
+import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa'; // Import icons
 
 function OrderForm() {
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [customerEmail, setCustomerEmail] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');  // State for success message
-  const [orderId, setOrderId] = useState('');  // State to store orderId
-  const [currentTime, setCurrentTime] = useState(new Date());  // State to track current time
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
+  const [orderId, setOrderId] = useState(''); // State to store orderId
+  const [currentTime, setCurrentTime] = useState(new Date()); // State to track current time
 
   // Update the time every second
   useEffect(() => {
@@ -26,7 +26,7 @@ function OrderForm() {
     const order = {
       productId,
       quantity,
-      customerEmail
+      customerEmail,
     };
 
     try {
@@ -40,15 +40,15 @@ function OrderForm() {
 
       if (response.ok) {
         const result = await response.json();
-        const orderNumber = result.OrderId || result.orderId;  // Get the order number from the response
+        const orderNumber = result.OrderId || result.orderId; // Get the order number from the response
 
         if (orderNumber) {
           // Clear the form fields
           setProductId('');
           setQuantity(1);
           setCustomerEmail('');
-          setOrderId(orderNumber);  // Set the order number
-          setSuccessMessage('Order placed successfully!');  // Set success message
+          setOrderId(orderNumber); // Set the order number
+          setSuccessMessage('Order placed successfully!'); // Set success message
         } else {
           setSuccessMessage('Order placed successfully, but no Order Number returned.');
         }
@@ -67,6 +67,7 @@ function OrderForm() {
     <div className="order-form-container">
       {/* Left Panel - Main Form */}
       <div className="left-panel">
+        {/* Display current date and time at the top */}
         <div className="time-display">{currentTime.toLocaleString()}</div>
 
         <h1 className="title">AWS Serverless Project - Order Processing System</h1>
@@ -101,21 +102,55 @@ function OrderForm() {
           </div>
           <button type="submit" className="submit-button">Place Order</button>
 
+          {/* Display success message below the button */}
           {successMessage && <p className="success-message">{successMessage}</p>}
+          {/* Display the Order Number */}
           {orderId && <p className="order-number">Order Number: <span>{orderId}</span></p>}
         </form>
+
+        {/* Social Media Links */}
+        <div className="social-links">
+          <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
+            <FaGlobe className="social-icon" /> Website
+          </a>
+          <a href="https://linkedin.com/in/prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <FaLinkedin className="social-icon" /> LinkedIn
+          </a>
+          <a href="https://github.com/prafulpatel16/prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <FaGithub className="social-icon" /> GitHub
+          </a>
+          <a href="https://www.youtube.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <FaYoutube className="social-icon" /> YouTube
+          </a>
+          <a href="https://medium.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <FaMedium className="social-icon" /> Medium
+          </a>
+          <a href="https://dev.to/prafulpatel16" target="_blank" rel="noopener noreferrer">
+            <FaDev className="social-icon" /> Dev.to
+          </a>
+        </div>
+
+        {/* Footer */}
+        <div className="footer">
+          <p>
+            Developed & Implemented By:{' '}
+            <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
+              PRAFUL PATEL
+            </a>
+          </p>
+        </div>
       </div>
 
       {/* Right Panel - Tech Stack */}
       <div className="right-panel">
         <h2>Tech Stack</h2>
         <ul>
-          <li><strong>Frontend:</strong> React</li>
-          <li><strong>Backend:</strong> AWS Lambda, API Gateway, Step Functions</li>
-          <li><strong>Database:</strong> DynamoDB</li>
-          <li><strong>Storage:</strong> S3 for static assets and receipts</li>
-          <li><strong>Messaging:</strong> SNS for notifications</li>
-          <li><strong>Infrastructure as Code:</strong> AWS CloudFormation, Terraform</li>
+          <li><span>Frontend:</span> React</li>
+          <li><span>Backend:</span> AWS Lambda, API Gateway, Step Functions</li>
+          <li><span>Database:</span> DynamoDB</li>
+          <li><span>Storage:</span> S3 for static assets and receipts</li>
+          <li><span>Messaging:</span> SNS for notifications</li>
+          <li><span>Infrastructure as Code:</span> AWS CloudFormation, Terraform</li>
         </ul>
       </div>
     </div>
