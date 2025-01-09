@@ -5,6 +5,17 @@ body {
   padding: 0;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Add space between the logos */
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 150px;
+}
+
 .order-form-container {
   display: flex;
   justify-content: space-between;

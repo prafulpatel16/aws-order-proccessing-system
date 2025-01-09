@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './OrderForm.css'; // Import CSS for styling
 import { FaLinkedin, FaGithub, FaYoutube, FaMedium, FaDev, FaGlobe } from 'react-icons/fa'; // Import icons
-import awsLogo from './aws-logo.png'; // Add an AWS logo file in your project
-
+import awsLogo from './aws-logo.png'; // Add AWS logo file in your project
+import prafulLogo from './praful-logo.png'; // Add Praful logo file in your project
 
 function OrderForm() {
   const [productId, setProductId] = useState('');
@@ -32,13 +32,16 @@ function OrderForm() {
     };
 
     try {
-      const response = await fetch('https://88ax43nqed.execute-api.us-east-1.amazonaws.com/dev/place-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(order),
-      });
+      const response = await fetch(
+        'https://88ax43nqed.execute-api.us-east-1.amazonaws.com/dev/place-order',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(order),
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
@@ -67,10 +70,15 @@ function OrderForm() {
 
   return (
     <div className="order-form-container">
+      {/* Logo Section */}
+      <div className="logo-container">
+        <img src={awsLogo} alt="AWS Logo" className="logo" />
+        <img src={prafulLogo} alt="Praful Logo" className="logo" />
+      </div>
+
       {/* Left Panel - Main Form */}
       <div className="left-panel">
         {/* Display current date and time at the top */}
-        <img src={awsLogo} alt="AWS Logo" style={{ maxWidth: '150px', marginBottom: '20px' }} />
         <div className="time-display">{currentTime.toLocaleString()}</div>
 
         <h1 className="title">AWS Serverless Project - Order Processing System</h1>
