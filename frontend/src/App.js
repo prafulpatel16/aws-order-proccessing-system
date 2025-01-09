@@ -47,7 +47,6 @@ function OrderForm() {
         const orderNumber = result.OrderId || result.orderId; // Get the order number from the response
 
         if (orderNumber) {
-          // Clear the form fields
           setProductId('');
           setQuantity(1);
           setCustomerEmail('');
@@ -60,27 +59,23 @@ function OrderForm() {
         setSuccessMessage('Failed to place order. Please try again.');
       }
     } catch (error) {
-      console.error('Error placing order:', error);
       setSuccessMessage('Error placing order. Please try again.');
     }
   };
 
   return (
     <div className="order-form-container">
-      <div className="content-container">
-        {/* Left Panel */}
-        <div className="left-panel">
-          {/* Logo Section */}
-          <div className="logo-section">
-            <img src={awsLogo} alt="AWS Logo" className="logo aws-logo" />
-            <img src={prafulLogo} alt="Praful Logo" className="logo praful-logo" />
-          </div>
+      <div className="layout">
+        {/* Left Section: Logos */}
+        <div className="left-section">
+          <img src={awsLogo} alt="AWS Logo" className="logo" />
+          <img src={prafulLogo} alt="Praful Logo" className="logo" />
+        </div>
 
-          {/* Display current date and time */}
+        {/* Middle Section: Form */}
+        <div className="middle-section">
           <div className="time-display">{currentTime.toLocaleString()}</div>
-
           <h1 className="title">AWS Serverless Project - Order Processing System</h1>
-
           <form onSubmit={handleSubmit} className="order-form">
             <div className="form-group">
               <label>Product ID:</label>
@@ -89,7 +84,7 @@ function OrderForm() {
                 value={productId}
                 onChange={(e) => setProductId(e.target.value)}
                 required
-                className="reduced-textbox"
+                className="textbox"
               />
             </div>
             <div className="form-group">
@@ -99,7 +94,7 @@ function OrderForm() {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 required
-                className="reduced-textbox"
+                className="textbox"
               />
             </div>
             <div className="form-group">
@@ -109,61 +104,61 @@ function OrderForm() {
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
                 required
-                className="reduced-textbox"
+                className="textbox"
               />
             </div>
             <button type="submit" className="submit-button">Place Order</button>
-
-            {/* Success and Error Messages */}
             {successMessage && <p className="success-message">{successMessage}</p>}
             {orderId && <p className="order-number">Order Number: <span>{orderId}</span></p>}
           </form>
-
-          {/* Social Media Links */}
-          <div className="social-links">
-            <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
-              <FaGlobe className="social-icon" /> Website
-            </a>
-            <a href="https://linkedin.com/in/prafulpatel16" target="_blank" rel="noopener noreferrer">
-              <FaLinkedin className="social-icon" /> LinkedIn
-            </a>
-            <a href="https://github.com/prafulpatel16" target="_blank" rel="noopener noreferrer">
-              <FaGithub className="social-icon" /> GitHub
-            </a>
-            <a href="https://www.youtube.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
-              <FaYoutube className="social-icon" /> YouTube
-            </a>
-            <a href="https://medium.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
-              <FaMedium className="social-icon" /> Medium
-            </a>
-            <a href="https://dev.to/prafulpatel16" target="_blank" rel="noopener noreferrer">
-              <FaDev className="social-icon" /> Dev.to
-            </a>
-          </div>
-
-          {/* Footer */}
-          <div className="footer">
-            <p>
-              Developed & Implemented By:{' '}
-              <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
-                PRAFUL PATEL
-              </a>
-            </p>
-          </div>
         </div>
 
-        {/* Right Panel - Tech Stack */}
-        <div className="right-panel">
-          <h2>Tech Stack</h2>
-          <ul>
-            <li><span>Frontend:</span> React</li>
-            <li><span>Backend:</span> AWS Lambda, API Gateway, Step Functions</li>
-            <li><span>Database:</span> DynamoDB</li>
-            <li><span>Storage:</span> S3 for static assets and receipts</li>
-            <li><span>Messaging:</span> SNS for notifications</li>
-            <li><span>Infrastructure as Code:</span> AWS CloudFormation, Terraform</li>
-          </ul>
+        {/* Right Section: Tech Stack */}
+        <div className="right-section">
+          <div className="techstack-container">
+            <h2>Tech Stack</h2>
+            <ul>
+              <li><span>Frontend:</span> React</li>
+              <li><span>Backend:</span> AWS Lambda, API Gateway, Step Functions</li>
+              <li><span>Database:</span> DynamoDB</li>
+              <li><span>Storage:</span> S3 for static assets and receipts</li>
+              <li><span>Messaging:</span> SNS for notifications</li>
+              <li><span>Infrastructure as Code:</span> AWS CloudFormation, Terraform</li>
+            </ul>
+          </div>
         </div>
+      </div>
+
+      {/* Social Media Links */}
+      <div className="social-links">
+        <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
+          <FaGlobe className="social-icon" /> Website
+        </a>
+        <a href="https://linkedin.com/in/prafulpatel16" target="_blank" rel="noopener noreferrer">
+          <FaLinkedin className="social-icon" /> LinkedIn
+        </a>
+        <a href="https://github.com/prafulpatel16" target="_blank" rel="noopener noreferrer">
+          <FaGithub className="social-icon" /> GitHub
+        </a>
+        <a href="https://www.youtube.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
+          <FaYoutube className="social-icon" /> YouTube
+        </a>
+        <a href="https://medium.com/@prafulpatel16" target="_blank" rel="noopener noreferrer">
+          <FaMedium className="social-icon" /> Medium
+        </a>
+        <a href="https://dev.to/prafulpatel16" target="_blank" rel="noopener noreferrer">
+          <FaDev className="social-icon" /> Dev.to
+        </a>
+      </div>
+
+      {/* Footer */}
+      <div className="footer">
+        <p>
+          Developed & Implemented By:{' '}
+          <a href="https://www.praful.cloud" target="_blank" rel="noopener noreferrer">
+            PRAFUL PATEL
+          </a>
+        </p>
       </div>
     </div>
   );
