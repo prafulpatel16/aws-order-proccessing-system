@@ -24,7 +24,7 @@
   - [6. Update Inventory Lambda](#update-inventory-lambda)
   - [7. Send Notification (SNS)](#send-notification-sns)
   - [8. Generate and Store Receipt (S3)](#generate-and-store-receipt-s3)
-           [Order Receipt PDF Generation](orderReceiptPdfGeneration.md)
+          - [Order Receipt PDF Generation](orderReceiptPdfGeneration.md)
   - [9. Monitoring and Error Handling](#monitoring-and-error-handling)
 - [AWS Step Functions Workflow Example](#aws-step-functions-workflow-example)
 - [Benefits of this Approach](#benefits-of-this-approach)
@@ -311,6 +311,14 @@ Order No: 3625 Receipt
 ![image](https://github.com/user-attachments/assets/cf89d2da-f2a7-403f-9371-05c70d220f2a)
 
 ![image](https://github.com/user-attachments/assets/3605cf10-6f72-463e-be41-44314c996c6c)
+
+# Pdf receipt generated
+
+![alt text](OrderProcess.png)
+![alt text](email.png)
+![alt text](s3-receipt.png)
+![alt text](orderpdf.png)
+
 
 ## CloudWatch Logs
 
