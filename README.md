@@ -335,6 +335,268 @@ Order No: 3625 Receipt
 ![alt text](orderpdf.png)
 
 
+## SES configuration
+
+# Setting Up SES for Sending Emails with Lambda
+
+This documentation provides detailed steps for configuring Amazon Simple Email Service (SES) to send emails with attachments (like a PDF invoice) using AWS Lambda. The process includes SES configuration, setting permissions, and updating Lambda code.
+
+## Prerequisites
+
+- Access to an AWS account with permissions to configure SES, Lambda, and IAM.
+- Verified email addresses in SES (both sender and recipient).
+- A Lambda function set up in the AWS Management Console.
+
+---
+
+## Step 1: Verify Email Addresses in SES
+
+1. **Log in to the AWS Management Console**.
+2. Navigate to **SES** (Simple Email Service).
+3. In the left-hand menu, select **Configuration** > **Identities**.
+4. Click **Create identity**.
+5. Choose **Email address** as the identity type.
+6. Enter the email address you want to verify (e.g., `praful.can1611@gmail.com`).
+7. Click **Create identity**.
+8. Check your email inbox for a verification email from AWS SES.
+9. Click the verification link in the email.
+10. Repeat these steps to verify the recipient email address.
+
+![alt text](image-5.png)
+
+---
+
+## Step 2: Configure IAM Permissions for Lambda
+
+To allow the Lambda function to send emails using SES:
+
+1. Navigate to **IAM** in the AWS Management Console.
+2. Select **Roles** in the left-hand menu.
+3. Find the role associated with your Lambda function (e.g., `AWSLambdaBasicExecutionRole`).
+4. Click the role name to edit it.
+5. Attach the following policy:
+
+    ```json
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": "ses:SendRawEmail",
+          "Resource": "*"
+        }
+      ]
+    }
+    ```
+
+6. Click **Review policy**, then **Save changes**.
+
+![alt text](images1/ses2.png)
+
+---
+
+## Step 3: Update Lambda Code
+
+### Lambda Function Code
+
+```python
+import json
+import os
+import boto3
+import base64
+from datetime import datetime
+from fpdf import FPDF
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+
+# Initialize the S3 and SES clients
+s3 = boto3.client('s3')
+ses = boto3.client('ses')
+
+class PDF(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 12)
+        self.cell(0, 10, 'Order Receipt', align='C', ln=1)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Page {self.page_no()}', align='C')
+
+def lambda_handler(event, context):
+    try:
+        # Log the incoming event
+        print(f"Received event: {event}")
+
+        # Extract necessary fields
+        order_id = event.get('orderId') or event.get('OrderId')
+        email = event.get('email')
+        product_id = event.get('productId')
+        quantity = event.get('quantity')
+
+        if not order_id:
+            raise Exception("'orderId' or 'OrderId' is required but not found in the event")
+        if not email:
+            raise Exception("'email' is required but not found in the event")
+        if not product_id:
+            raise Exception("'productId' is required but not found in the event")
+        if not quantity:
+            raise Exception("'quantity' is required but not found in the event")
+
+        # Generate current timestamp
+        current_time = datetime.utcnow().isoformat()
+
+        # Receipt content
+        receipt = {
+            'Order ID': order_id,
+            'Email': email,
+            'Product ID': product_id,
+            'Quantity': quantity,
+            'Date': current_time
+        }
+
+        # Create the PDF receipt
+        pdf = PDF()
+        pdf.add_page()
+        pdf.set_font('Arial', '', 12)
+
+        pdf.cell(0, 10, 'Receipt Details:', ln=1)
+        pdf.ln(10)
+        for key, value in receipt.items():
+            pdf.cell(0, 10, f'{key}: {value}', ln=1)
+
+        # Save the PDF to a local file
+        pdf_file_path = f"/tmp/{order_id}.pdf"
+        pdf.output(pdf_file_path)
+
+        # Log PDF generation success
+        print(f"PDF generated successfully: {pdf_file_path}")
+
+        # Generate the S3 object key
+        bucket_name = os.environ['S3_BUCKET_NAME']
+        object_key = f"receipts/{order_id}.pdf"
+
+        # Upload the PDF to S3
+        with open(pdf_file_path, 'rb') as pdf_file:
+            s3.put_object(
+                Bucket=bucket_name,
+                Key=object_key,
+                Body=pdf_file,
+                ContentType='application/pdf'
+            )
+
+        # Send the email with the attachment using SES
+        send_email_with_attachment(email, pdf_file_path, order_id)
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps({
+                'message': 'PDF receipt generated, saved to S3, and emailed successfully',
+                'receiptUrl': f"s3://{bucket_name}/{object_key}"
+            })
+        }
+
+    except Exception as e:
+        # Log the error
+        print(f"Error: {e}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'message': 'PDF receipt generation failed',
+                'error': str(e)
+            })
+        }
+
+def send_email_with_attachment(email, pdf_file_path, order_id):
+    print("Step: Preparing email with attachment.")
+
+    # Sender and recipient
+    sender_email = os.environ['SES_SENDER_EMAIL']
+    recipient_email = email
+
+    # Email subject and body
+    subject = f"Your Order Receipt - Order ID: {order_id}"
+    body_text = "Thank you for your order. Please find your receipt attached."
+    body_html = """
+    <html>
+        <body>
+            <h1>Thank you for your order!</h1>
+            <p>Please find your receipt attached.</p>
+        </body>
+    </html>
+    """
+
+    # Create a MIME multipart message
+    msg = MIMEMultipart()
+    msg['Subject'] = subject
+    msg['From'] = sender_email
+    msg['To'] = recipient_email
+
+    # Add the email body
+    msg.attach(MIMEText(body_text, 'plain'))
+    msg.attach(MIMEText(body_html, 'html'))
+
+    # Attach the PDF
+    with open(pdf_file_path, 'rb') as pdf_file:
+        attachment = MIMEApplication(pdf_file.read(), _subtype="pdf")
+        attachment.add_header(
+            'Content-Disposition',
+            'attachment',
+            filename=f"{order_id}.pdf"
+        )
+        msg.attach(attachment)
+
+    # Send the email using SES
+    response = ses.send_raw_email(
+        Source=sender_email,
+        Destinations=[recipient_email],
+        RawMessage={
+            'Data': msg.as_string()
+        }
+    )
+    print(f"Email sent successfully! Message ID: {response['MessageId']}")
+```
+![alt text](images1/lambda2.png)
+
+---
+
+## Step 4: Test the Lambda Function
+
+1. Navigate to the Lambda function in the AWS Management Console.
+2. Click **Test**.
+3. Create a new test event with the following JSON structure:
+
+    ```json
+    {
+        "orderId": "12345",
+        "email": "recipient@example.com",
+        "productId": "P001",
+        "quantity": 2
+    }
+    ```
+
+4. Click **Test** to execute the function.
+5. Check the recipient's inbox for the email with the PDF attachment.
+
+---
+
+## Step 5: Enable CloudWatch Logs
+
+1. Navigate to **CloudWatch** in the AWS Management Console.
+2. Go to **Logs** > **Log groups**.
+3. Find the log group for your Lambda function (e.g., `/aws/lambda/YourFunctionName`).
+4. Open the log group to view logs for each invocation.
+
+---
+
+## Notes
+
+- Ensure that all email addresses used (sender and recipient) are verified in SES when operating in the SES sandbox environment.
+- Move SES out of the sandbox to send emails to unverified recipients.
+- Ensure IAM roles and policies are correctly configured to avoid permission errors.
+
+
 ## CloudWatch Logs
 
 Log Groups
