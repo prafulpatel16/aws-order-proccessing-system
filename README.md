@@ -17,7 +17,7 @@
 # Complete Documentation
  - 1. [Order Receipt PDF Generation](1.orderReceiptPdfGeneration.md)
  - 2. [secureArchiteture.md](2.secureArchiteture.md)
- - 3. [Troubelshooting](3.Troubelshooting)
+ - 3. [Troubelshooting](3.Troubelshooting.md)
  
 ## Table of Contents
 - [Project Use Case](#project-use-case)
