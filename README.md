@@ -769,19 +769,6 @@ jobs:
         run: aws s3 sync ./frontend/build s3://ordeprocess-frontend/ --delete
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Steps Breakdown
 # Checkout Code: Uses the actions/checkout@v3 action to pull the repository code.
 # Configure AWS Credentials: Uses aws-actions/configure-aws-credentials@v4 to set up AWS credentials for deployment.
@@ -792,4 +779,38 @@ jobs:
 # Deploy to S3: Deploys the built frontend to the specified S3 bucket.
 
 
+--------------------------------------------------
 
+# 📝 Project Notes and Updates
+
+## ✅ Tasks Completed
+1. 🎨 **New Frontend UI Updated**  
+   - Date: *Jan 10, 2025*  
+   - Description: Revamped the frontend UI for a more professional and user-friendly design.
+
+2. ✉️ **New Feature Added: Invoice PDF Sent in Email Attachment**  
+   - Date: *Jan 10, 2025*  
+   - Description: Integrated AWS SES to send order receipts as PDF attachments to user emails.
+
+3. 🖨️ **Lambda Function Updated: `generateReceiptFunction`**  
+   - Date: *Jan 10, 2025*  
+   - Description: Enhanced the Lambda function to support PDF receipt generation and email attachment.
+
+---
+
+## 🚀 Things To Do / Improvements
+1. 🔒 **Secure Entire Architecture and Application**  
+   - Implement security best practices, such as IAM policies, VPC configurations, and WAF.
+
+2. 📊 **Monitor Entire Architecture**  
+   - Set up detailed monitoring and alerting for the system using CloudWatch and SNS.
+
+3. 🌐 **Domain System & CloudFront**  
+   - Configure a custom domain and integrate CloudFront for better performance and caching.
+
+4. 🛠️ **Achieve 100% Infrastructure as Code (IAC)**  
+   - Ensure all resources and configurations are managed through Terraform/CloudFormation.
+
+---
+
+✨ *This project is continuously evolving to deliver a robust, secure, and scalable solution!*  
