@@ -380,6 +380,63 @@ TO automate the frontend web app deployment to aws S3 for static web content
 ![image](https://github.com/user-attachments/assets/35b64cfd-e987-401f-9fd7-b9efefdb4c93)
 
 
+### Troubleshooting
+--------------------
+
+- Error: Invoice pdf cannot be attached and sent to the email in attachment
+# Lambda function Monitoring
+
+![alt text](images1/lambda1.png)
+
+- Attach IAM Policy to LambdaEXecutoion role for cloud watch log
+
+![alt text](images1/log1.png)
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+- Attach Policy to IAM LAmbdaexecution Role
+
+![alt text](image-4.png)
+
+- Monitor the logs
+![alt text](images1/log3.png)
+
+- Analyze the cloud watch logs for function execution to monitor what went wrong
+![alt text](images1/log4.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## frontend-ci.yml
 ## Frontend CI Pipeline
 
@@ -440,6 +497,19 @@ jobs:
       # Step 7: Deploy to S3
       - name: Deploy to S3
         run: aws s3 sync ./frontend/build s3://ordeprocess-frontend/ --delete
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Steps Breakdown
