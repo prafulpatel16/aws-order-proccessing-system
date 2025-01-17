@@ -7,3 +7,7 @@ output "role_arn" {
   value       = aws_iam_role.step_functions_role.arn
   description = "The ARN of the Step Functions IAM role"
 }
+output "sns_topic_arn" {
+  value       = aws_sns_topic.order_notifications.arn
+  description = "ARN of the SNS topic"
+}

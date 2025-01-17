@@ -74,12 +74,12 @@ variable "state_machine_name" {
 }
 
 variable "sns_topic_name" {
-  description = "Name of the SNS topic for notifications"
+  description = "The name of the SNS topic for order notifications"
   type        = string
 }
 
 variable "email_subscription" {
   description = "Email address for SNS subscription"
   type        = string
-  default     = ""  # Set a default or leave empty if not needed
+  default     = "" # Set a default or leave empty if not needed
 }

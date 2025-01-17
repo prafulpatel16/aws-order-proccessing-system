@@ -2,7 +2,7 @@
 # Define directories
 LAMBDA_FUNCTIONS_DIR="../backend/functions"
 ZIP_OUTPUT_DIR="../backend/zips"
-S3_BUCKET="order-processing-lambda-buckettf"
+S3_BUCKET="op-lambda-functions-bucket-tf"
 
 
 # Create the output directory if it doesn't exist

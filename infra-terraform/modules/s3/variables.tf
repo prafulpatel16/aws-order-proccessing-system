@@ -1,5 +1,5 @@
 variable "bucket_name" {
-  default = "order-processing-frontend-bucket"
+  default = ""
 }
 
 variable "index_doc" {

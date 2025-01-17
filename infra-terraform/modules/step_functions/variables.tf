@@ -37,3 +37,12 @@ variable "environment" {
   description = "Deployment environment"
   type        = string
 }
+variable "email_subscription" {
+  description = "Email address to subscribe to the SNS topic"
+  type        = string
+  default     = ""
+}
+variable "sns_topic_name" {
+  description = "The name of the SNS topic for order notifications"
+  type        = string
+}

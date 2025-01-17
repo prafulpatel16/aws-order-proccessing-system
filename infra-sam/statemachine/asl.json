@@ -1,0 +1,37 @@
+{
+    "Comment": "Order processing workflow",
+    "StartAt": "ValidateOrder",
+    "States": {
+      "ValidateOrder": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ValidateOrderFunction",
+        "Next": "SaveOrder"
+      },
+      "SaveOrder": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:SaveOrderFunction",
+        "Next": "ProcessPayment"
+      },
+      "ProcessPayment": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ProcessPaymentFunction",
+        "Next": "UpdateInventory"
+      },
+      "UpdateInventory": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:UpdateInventoryFunction",
+        "Next": "SendNotification"
+      },
+      "SendNotification": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:SendNotificationFunction",
+        "Next": "GenerateReceipt"
+      },
+      "GenerateReceipt": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:GenerateReceiptFunction",
+        "End": true
+      }
+    }
+  }
+  

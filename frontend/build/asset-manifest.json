@@ -1,15 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.c92b0796.css",
-    "main.js": "/static/js/main.7d79bafb.js",
+    "main.css": "/static/css/main.f31b67dd.css",
+    "main.js": "/static/js/main.eefce513.js",
     "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "static/media/praful-logo.png": "/static/media/praful-logo.76a8360efb02e35f259b.png",
+    "static/media/AWS-com-logo.png": "/static/media/AWS-com-logo.832dc07c052b1d2fe84e.png",
+    "static/media/aws-logo.png": "/static/media/aws-logo.850296a094250f4a242e.png",
     "index.html": "/index.html",
-    "main.c92b0796.css.map": "/static/css/main.c92b0796.css.map",
-    "main.7d79bafb.js.map": "/static/js/main.7d79bafb.js.map",
+    "main.f31b67dd.css.map": "/static/css/main.f31b67dd.css.map",
+    "main.eefce513.js.map": "/static/js/main.eefce513.js.map",
     "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c92b0796.css",
-    "static/js/main.7d79bafb.js"
+    "static/css/main.f31b67dd.css",
+    "static/js/main.eefce513.js"
   ]
 }

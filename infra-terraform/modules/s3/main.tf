@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "frontend_bucket" {
 
   tags = {
     Name        = var.bucket_name
-    Environment = "Production"
+    Environment = "dev"
   }
 }
 

@@ -1,0 +1,207 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: python3.8
+    Timeout: 30
+    MemorySize: 128
+    Tracing: Active
+    Environment:
+      Variables:
+        DYNAMODB_ORDERS_TABLE: !Ref OrdersTable
+        DYNAMODB_INVENTORY_TABLE: !Ref InventoryTable
+        SNS_TOPIC_ARN: !Ref NotificationTopic
+        SES_EMAIL_FROM: !Ref SESFromEmail
+
+Parameters:
+  SESFromEmail:
+    Type: String
+    Default: "praful.can1611@gmail.com"
+    Description: "The verified SES email address to send notifications."
+
+Resources:
+  # S3 Bucket for ReactJS Static Website
+  StaticWebBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+
+  StaticWebBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticWebBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${StaticWebBucket}/*"
+
+  # API Gateway
+  # API Gateway
+  # API Gateway
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: 
+        AllowOrigins: "'*'"
+        AllowHeaders: "'*'"
+        AllowMethods: "'OPTIONS,POST'"
+        MaxAge: 600
+      DefinitionBody:
+        openapi: 3.0.1
+        info:
+          title: OrderProcessingAPI
+          version: 1.0.0
+        paths:
+          /place-order:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${OrderPlacementFunction.Arn}/invocations"
+                httpMethod: POST
+                type: aws_proxy
+
+
+  # Lambda Function to Build and Upload Frontend
+  BuildAndUploadFrontendFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      CodeUri: ./src/build_and_upload_frontend/
+      Runtime: python3.8
+      Timeout: 300
+      MemorySize: 512
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: !Ref StaticWebBucket
+      Policies:
+        - S3FullAccessPolicy:
+            BucketName: !Ref StaticWebBucket
+
+  # DynamoDB Tables
+  OrdersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Orders
+
+  InventoryTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Inventory
+
+  # SNS Topic
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref SESFromEmail
+
+  # Lambda Functions
+  OrderPlacementFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: A-orderPlacement.lambda_handler
+      CodeUri: ./src/A-orderPlacement/
+      Events:
+        PlaceOrder:
+          Type: Api
+          Properties:
+            Path: /place-order
+            Method: POST
+            RestApiId: !Ref ApiGateway
+
+  ValidateOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: B-validateOrder.lambda_handler
+      CodeUri: ./src/B-validateOrder/
+
+  SaveOrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: B.1-SaveOrder.lambda_handler
+      CodeUri: ./src/B.1-SaveOrder/
+
+  ProcessPaymentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: C-processPayment.lambda_handler
+      CodeUri: ./src/C-processPayment/
+
+  UpdateInventoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: D-updateInventory.lambda_handler
+      CodeUri: ./src/D-updateInventory/
+
+  SendNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: E-sendNotification.lambda_handler
+      CodeUri: ./src/E-sendNotification/
+
+  GenerateReceiptFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: F-generateReceipt.lambda_handler
+      CodeUri: ./src/F-generateReceipt/
+
+  # Step Functions Workflow
+  OrderProcessingStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: ./statemachine/asl.json
+      Role: !GetAtt StepFunctionsRole.Arn
+
+  # IAM Role for Step Functions
+  StepFunctionsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "states.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: StepFunctionsPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:InvokeFunction"
+                  - "sns:Publish"
+                Resource: "*"
+
+  # SES Email Identity
+  SESIdentity:
+    Type: AWS::SES::EmailIdentity
+    Properties:
+      Email: !Ref SESFromEmail
+
+Outputs:
+  WebsiteBucketUrl:
+    Description: "S3 Website URL"
+    Value: !GetAtt StaticWebBucket.WebsiteURL
+
+  ApiGatewayEndpoint:
+    Description: "API Gateway Endpoint URL"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/place-order"
+
+  StateMachineArn:
+    Description: "ARN of the Step Functions State Machine"
+    Value: !Ref OrderProcessingStateMachine
+
+  SnsTopicArn:
+    Description: "ARN of the SNS Topic"
+    Value: !Ref NotificationTopic

@@ -61,6 +61,11 @@ coverage.xml
 *.orig
 *.rej
 
+# AWS SAM-related temporary files
+.aws-sam/
+template-packaged.yaml
+packaged.yaml
+
 # AWS-related temporary files
 *.tfplan
 *.tfbackup

@@ -9,7 +9,7 @@ variable "lambda_function_arn" {
 
 variable "stage_name" {
   description = "Deployment stage for API Gateway"
-  default     = "prod"
+  default     = "dev"
 }
 variable "aws_region" {
   description = "AWS region for the API Gateway"
