@@ -30,7 +30,7 @@ The **complete documentation** is also available here in this GitHub repository,
 
 
 ## 🛠️ Complete Documentation
-0. 📚  [Application Process](0.ApplicationProcess.md) 
+0. 📚 [Application Process](0.ApplicationProcess.md) 
 1. 📄 [Order Receipt PDF Generation](1.orderReceiptPdfGeneration.md)
 2. 🛡️ [Secure Architecture](2.secureArchiteture.md)
 3. 🐞 [Troubleshooting Tips](3.Troubelshooting.md)
@@ -91,6 +91,8 @@ The system is designed using AWS services such as API Gateway, Lambda, Step Func
 
 
 # Real-Time Order Processing System
+
+0. 📚 [Application Process workflow](0.ApplicationProcess.md) 
 
 ## Architecture Overview
 
@@ -358,10 +360,16 @@ The architecture ensures a seamless, scalable, and reliable order processing sys
 ### 9. Monitoring and Error Handling
 - Implement CloudWatch for monitoring Lambda functions, API Gateway, and Step Functions.
 
-## AWS Step Functions Definition
 
 ## Frontend Web Application
+
+- Old UI Interface
 ![Frontend Web Application](https://github.com/user-attachments/assets/b732ef30-45f6-4fc7-89b9-50ad76cac59e)
+
+- New Improved Frontend UI Interface
+![alt text](images1/web1.png)
+
+## AWS Step Functions Definition
 
 ## Step Functions
 ![Step Functions](https://github.com/user-attachments/assets/ec394ad8-6e18-4c89-a65c-e5a2b3599383)
