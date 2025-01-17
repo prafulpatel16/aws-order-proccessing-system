@@ -19,6 +19,8 @@
 1. 📄 [Order Receipt PDF Generation](1.orderReceiptPdfGeneration.md)
 2. 🛡️ [Secure Architecture](2.secureArchiteture.md)
 3. 🐞 [Troubleshooting Tips](3.Troubelshooting.md)
+4. ⚡ [Lambda Optimization](4.lambdaOptimization.md)
+5. 🔧 [Lambda Power Tuning](5.lambdaPowerTuning.md)
 
  
 ## Table of Contents
