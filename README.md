@@ -30,6 +30,7 @@ The **complete documentation** is also available here in this GitHub repository,
 
 
 ## 🛠️ Complete Documentation
+0. 📚  [Application Process](0.ApplicationProcess.md) 
 1. 📄 [Order Receipt PDF Generation](1.orderReceiptPdfGeneration.md)
 2. 🛡️ [Secure Architecture](2.secureArchiteture.md)
 3. 🐞 [Troubleshooting Tips](3.Troubelshooting.md)
