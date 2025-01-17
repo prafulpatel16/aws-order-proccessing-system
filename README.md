@@ -1,18 +1,25 @@
 # 🚀 AWS Serverless Project: Scalable & Secure Order Processing System 🌐
 
+## 🏗️ Architecture Diagram:  
+
+
+![AWS Serverless Order Processing System](https://github.com/user-attachments/assets/8cda5508-4736-437e-8489-691279df9fe7)
+
+## 🏗️ Architecture Workflow:
+
+![Serverless Architecture Diagram](https://github.com/user-attachments/assets/6324468f-4c46-421e-801b-64a880d1fec8)
+
+
 ## 📖 Complete Documentation  
 
 👉 **[AWS Serverless Order Processing System - Blog](https://praful.cloud/aws-serverless-order-processing-system)**  
-Explore the complete documentation, including architectural details, implementation steps, and optimization strategies, in the blog post. 
+Explore the complete documentation, including architectural details, implementation steps, and optimization strategies, in the blog post.  
 
 ## 📂 Complete Documentation on GitHub  
 
 The **complete documentation** is also available here in this GitHub repository, along with the code base and examples to help you get started:  
 👉 **[GitHub Documentation and Code Repository](https://github.com/your-repo/aws-serverless-order-processing)**  
 
-
-## 🏗️ Architecture Diagram:  
-![Serverless Architecture Diagram](https://github.com/user-attachments/assets/6324468f-4c46-421e-801b-64a880d1fec8)
 
 # Real-Time Order Processing System
 
