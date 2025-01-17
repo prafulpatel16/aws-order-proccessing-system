@@ -18,7 +18,7 @@ Explore the complete documentation, including architectural details, implementat
 ## 📂 Complete Documentation on GitHub  
 
 The **complete documentation** is also available here in this GitHub repository, along with the code base and examples to help you get started:  
-👉 **[GitHub Documentation and Code Repository](https://github.com/your-repo/aws-serverless-order-processing)**  
+👉 **[GitHub Documentation and Code Repository](https://github.com/prafulpatel16/aws-order-proccessing-system)**  
 
 
 # Real-Time Order Processing System
