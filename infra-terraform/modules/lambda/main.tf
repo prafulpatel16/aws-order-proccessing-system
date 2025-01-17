@@ -45,7 +45,7 @@ resource "aws_lambda_function" "lambda_function" {
 
   environment {
     variables = merge(each.value.environment_vars, {
-      AWS_REGION = var.aws_region
+      AWS_REGION =  null
     })
   }
 
