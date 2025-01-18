@@ -3,6 +3,11 @@
 resource "aws_iam_role" "lambda_role" {
   name               = "lambda_execution_role_tf"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
 }
 
 # IAM Role Policy Document
@@ -38,10 +43,10 @@ resource "aws_lambda_function" "lambda_function" {
   handler           = each.value.handler
   runtime           = each.value.runtime
   role              = aws_iam_role.lambda_role.arn
-
   # Use the filename from S3
-  s3_bucket         = var.s3_bucket
-  s3_key            = each.value.s3_key
+  s3_bucket = var.lambda_bucket
+  s3_key    = each.value.s3_key
+
 
   environment {
     variables = merge(each.value.environment_vars, {
@@ -53,4 +58,5 @@ resource "aws_lambda_function" "lambda_function" {
     Name        = each.key
     Environment = var.environment
   }
+  
 }

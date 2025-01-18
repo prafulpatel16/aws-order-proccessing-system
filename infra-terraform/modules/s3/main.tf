@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "frontend_bucket" {
-  bucket = var.bucket_name
+  bucket = var.web_bucket
 
   website {
     index_document = var.index_doc
@@ -7,10 +7,20 @@ resource "aws_s3_bucket" "frontend_bucket" {
   }
 
   tags = {
-    Name        = var.bucket_name
-    Environment = "dev"
+    Name        = var.web_bucket
+    Environment = var.environment
   }
 }
+
+# Define the S3 bucket for Lambda deployment
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = var.lambda_bucket
+ 
+
+
+}
+
+
 
 # Add a separate resource for public access block (if public access is needed)
 resource "aws_s3_bucket_public_access_block" "frontend_bucket_access_block" {

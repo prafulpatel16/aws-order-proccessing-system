@@ -14,10 +14,11 @@ terraform {
 
 # S3 Module
 module "s3" {
-  source      = "./modules/s3"
-  bucket_name = var.bucket_name
-  index_doc   = var.index_doc
-  error_doc   = var.error_doc
+  source        = "./modules/s3"
+  web_bucket    = var.web_bucket
+  lambda_bucket = var.lambda_bucket
+  index_doc     = var.index_doc
+  error_doc     = var.error_doc
 }
 
 # API Gateway Module
@@ -29,12 +30,22 @@ module "api_gateway" {
   aws_region          = var.aws_region
 }
 
+# Define the S3 bucket for Lambda deployment
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = var.lambda_bucket
+  acl    = "private"
+
+
+}
+
 # Lambda Module
 module "lambda" {
-  source      = "./modules/lambda"
-  s3_bucket   = var.s3_bucket
-  aws_region  = var.aws_region
-  environment = var.environment
+  source        = "./modules/lambda"
+  lambda_bucket = aws_s3_bucket.lambda_bucket.bucket
+  aws_region    = var.aws_region
+  environment   = var.environment
+
+  #  lambda_bucket = aws_s3_bucket.lambda_bucket.id  # Pass the bucket ID
 
   lambda_functions = {
     "orderPlacement" = {
@@ -83,7 +94,7 @@ module "lambda" {
 
 
 resource "aws_iam_role" "step_functions_role" {
-  name               = "step_functions_execution_role"
+  name = "step_functions_execution_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -97,7 +108,7 @@ resource "aws_iam_role" "step_functions_role" {
 }
 
 resource "aws_iam_role_policy" "step_functions_policy" {
-  role   = aws_iam_role.step_functions_role.id
+  role = aws_iam_role.step_functions_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -116,7 +127,7 @@ resource "aws_iam_role_policy" "step_functions_policy" {
 module "step_functions" {
   source               = "./modules/step_functions"
   state_machine_name   = var.state_machine_name
-  role_arn             = aws_iam_role.step_functions_role.arn  # Use IAM role from the module
+  role_arn             = aws_iam_role.step_functions_role.arn # Use IAM role from the module
   validate_order_arn   = module.lambda.lambda_arns["validateOrder"]
   process_payment_arn  = module.lambda.lambda_arns["processPayment"]
   update_inventory_arn = module.lambda.lambda_arns["updateInventory"]
@@ -129,6 +140,6 @@ module "step_functions" {
 module "sns" {
   source = "./modules/sns"
 
-  sns_topic_name = "order_notifications"
+  sns_topic_name     = "order_notifications"
   email_subscription = "praful.can1611@gmail.com"
 }

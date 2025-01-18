@@ -33,7 +33,7 @@ resource "aws_iam_role" "step_functions_role" {
 
 
 resource "aws_iam_role_policy" "step_functions_policy" {
-  role   = aws_iam_role.step_functions_role.id
+  role   = aws_iam_role.step_functions_role.name  
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -56,7 +56,7 @@ resource "aws_iam_role_policy" "step_functions_policy" {
 resource "aws_sfn_state_machine" "order_processing" {
   name     = var.state_machine_name
   #role_arn = aws_iam_role.step_functions_role.arn
-  role_arn = var.role_arn
+  role_arn = aws_iam_role.step_functions_role.arn
 
   definition = jsonencode({
     Comment: "Order processing state machine",

@@ -8,12 +8,12 @@ variable "environment" {
   type        = string
 }
 
-variable "s3_bucket" {
+variable "web_bucket" {
   description = "S3 bucket for Lambda deployment"
   type        = string
 }
 
-variable "bucket_name" {
+variable "lambda_bucket" {
   description = "S3 bucket for frontend deployment"
   type        = string
 }

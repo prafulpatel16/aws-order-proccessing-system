@@ -1,4 +1,4 @@
-variable "s3_bucket" {
+variable "lambda_bucket" {
   description = "S3 bucket where Lambda function code is stored"
   type        = string
 }
@@ -10,7 +10,7 @@ variable "aws_region" {
 
 variable "environment" {
   description = "Environment for the deployment (e.g., production, staging)"
-  default     = "production"
+  default     = "dev"
 }
 
 variable "lambda_functions" {
